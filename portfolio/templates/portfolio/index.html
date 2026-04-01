@@ -210,8 +210,7 @@
       <div class="project-filters reveal delay-1">
         <button class="filter-btn active" data-filter="all">All</button>
         <button class="filter-btn" data-filter="web">Web</button>
-        <button class="filter-btn" data-filter="api">API</button>
-        <button class="filter-btn" data-filter="tool">Tools</button>
+        <button class="filter-btn" data-filter="desktop">desktop</button> 
       </div>
     </div>
 
@@ -224,7 +223,7 @@
 
         <div class="project-thumb">
           {% if project.thumbnail %}
-            <img src="{{ project.thumbnail.url }}" alt="{{ project.title }}" loading="lazy" />
+            <img src="{{ project.thumbnail.url|default="No Picture Presented" }}" alt="{{ project.title }}" loading="lazy" />
           {% else %}
             <div class="project-thumb-placeholder">
               <i class="fas fa-code"></i>
