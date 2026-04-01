@@ -223,7 +223,7 @@
 
         <div class="project-thumb">
           {% if project.thumbnail %}
-            <img src="{{ project.thumbnail.url|default="No Picture Presented" }}" alt="{{ project.title }}" loading="lazy" />
+            <img src="{{ project.thumbnail.url }}" alt="{{ project.title }}" loading="lazy" />
           {% else %}
             <div class="project-thumb-placeholder">
               <i class="fas fa-code"></i>
