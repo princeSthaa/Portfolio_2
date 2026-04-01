@@ -1,0 +1,327 @@
+{% extends "portfolio/base.html" %}
+{% load static %}
+
+{% block title %}About — Prince Raj Shrestha{% endblock %}
+{% block meta_description %}Learn more about Prince Raj Shrestha — his journey, values, interests, and what drives him as a developer.{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href ="{% static 'css/about.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Particles -->
+<div class="particles" id="particles"></div>
+
+<!-- ─────────────────────────────────────────────────────────
+     PAGE HERO
+───────────────────────────────────────────────────────── -->
+<section class="about-page-hero">
+  <div class="container">
+    <div class="page-breadcrumb reveal">
+      <a href="{% url 'index' %}">Home</a>
+      <span>/</span>
+      <span>About</span>
+    </div>
+    <h1 class="reveal">
+      More About<br><em>Me</em>
+    </h1>
+    <p class="lead reveal delay-1">
+      Beyond the code — the person, the journey, the values, and the things that make me tick as a developer and a human.
+    </p>
+  </div>
+</section>
+
+
+<!-- ─────────────────────────────────────────────────────────
+     PROFILE
+───────────────────────────────────────────────────────── -->
+<section class="profile-section">
+  <div class="container">
+    <div class="profile-grid">
+
+      <!-- Sidebar -->
+      <div class="profile-sidebar reveal-left">
+        <div class="profile-photo">
+          {% if profile.avatar %}
+            <img src="{{ profile.avatar.url }}" alt="{{ profile.name }}" />
+          {% else %}
+            <i class="fas fa-user-circle"></i>
+          {% endif %}
+        </div>
+
+        <div class="profile-quick-info">
+          <div class="quick-info-item">
+            <i class="fas fa-user"></i>
+            <span><strong>{{ profile.name|default:"Prince Raj Shrestha" }}</strong></span>
+          </div>
+          <div class="quick-info-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>{{ profile.location|default:"Kathmandu, Nepal" }}</span>
+          </div>
+          <div class="quick-info-item">
+            <i class="fas fa-birthday-cake"></i>
+            <span>{{ profile.birthday|default:"2000" }} · <span id = "age"></span> years old</span>
+          </div>
+          <div class="quick-info-item">
+            <i class="fas fa-briefcase"></i>
+            <span>{{ profile.job_title|default:"Full-Stack Developer" }}</span>
+          </div>
+          <div class="quick-info-item">
+            <i class="fas fa-language"></i>
+            <span>Nepali, English</span>
+          </div>
+          <div class="quick-info-item">
+            <i class="fas fa-graduation-cap"></i>
+            <span>Bachelors in Computer Science</span>
+          </div>
+          <div class="quick-info-item">
+            <i class="fas fa-envelope"></i>
+            <span>{{ profile.gmail|default:"shresthaprince222@gmail.com" }}</span>
+          </div>
+        </div>
+
+        <a href="{{ profile.resume_pdf.url |default:'#' }}" 
+          class="btn btn-primary" 
+          style="width:100%; justify-content:center;"
+          target="_blank">
+          <i class="fas fa-download"></i> Download Resume
+        </a>
+
+        <div class="profile-social">
+          <a href="{{ profile.github|default:'#' }}" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+          <a href="{{ profile.linked_in|default:'#' }}" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="mailto:{{ profile.gmail|default:'shresthaprince222@gmail.com' }}" title="Email"><i class="fas fa-envelope"></i></a>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="profile-main">
+
+        <div class="about-block reveal">
+          <h3><i class="fas fa-user-astronaut"></i> My Story</h3>
+          <p>{{ profile.about_long|default:"loading...." }}</p>
+          <p>{{ profile.about_long1|default:"Loading...." }}</p>
+          <p>{{ profile.about_long2|default:"Loading...." }}</p>
+        </div>
+
+        <div class="about-block reveal delay-1">
+          <h3><i class="fas fa-heart"></i> My Values</h3>
+          <div class="values-grid">
+            {% for value in profile.values.all %}
+              <div class="value-card">
+                <span class="value-icon">{{ value.emoji }}</span>
+                <div class="value-name">{{ value.title }}</div>
+                <p class="value-desc">{{ value.description }}</p>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="about-block reveal delay-2">
+          <h3><i class="fas fa-compass"></i> How I Work</h3>
+          <p>I approach every project with a <strong>problem-first mindset</strong>: before writing a single line of code, I try to deeply understand the "why." What problem are we solving? Who is the user? What does success look like?</p>
+          <p>I prefer <strong>iterative development</strong> — ship a lean version, gather feedback, and improve. I'm a big fan of test-driven development for critical logic, good documentation, and meaningful code reviews.</p>
+          <p>My workflow typically involves <strong>Notion</strong> for planning, <strong>VS Code</strong> as my editor, <strong>Git + GitHub</strong> for version control, and <strong>Linux</strong> as my daily driver OS.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────
+     CERTIFICATIONS
+───────────────────────────────────────────────────────── -->
+<section class="certs-section">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Credentials</div>
+      <h2 class="section-title">Certifications &amp; <em>Achievements</em></h2>
+    </div>
+
+    <div class="certs-grid">
+      {% for cert in certifications %}
+      {# Backend-driven — one template renders all certs #}
+      <div class="cert-card reveal stagger-child" onclick="openModal('{{ cert.image.url }}')">
+        <div class="cert-icon">
+          <i class="{{ cert.icon|default:'fas fa-certificate' }}"></i>
+        </div>
+        <div class="cert-body">
+          <div class="cert-title">{{ cert.title }}</div>
+          <div class="cert-issuer">{{ cert.issuer }}</div>
+          <div class="cert-date">{{ cert.date }}</div>
+        </div>
+      </div>
+      {% empty %}
+      <p> Failed To load certificate</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<div id="certModal" class="modal" onclick="outsideClick(event)">
+  <img class="modal-content" id="modalImg">
+</div>
+<!-- ─────────────────────────────────────────────────────────
+     JOURNEY TIMELINE
+───────────────────────────────────────────────────────── -->
+<section class="journey-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label" style="justify-content:center;">My Journey</div>
+      <h2 class="section-title" style="text-align:center">
+        How I Got <em>Here</em>
+      </h2>
+    </div>
+
+    <div class="journey-timeline">
+      {% for milestone in journey_milestones %}
+      <div class="journey-item reveal" data-year="{{ milestone.year }}">
+        <div class="journey-card">
+          <h4>{{ milestone.title }}</h4>
+          <p>{{ milestone.description }}</p>
+        </div>
+      </div>
+      {% empty %}
+      <p> no history found</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ─────────────────────────────────────────────────────────
+     INTERESTS
+───────────────────────────────────────────────────────── -->
+<section class="interests-section">
+  <div class="container">
+    <div class="reveal" style="text-align:center; margin-bottom:1rem;">
+      <div class="section-label" style="justify-content:center;">Beyond Code</div>
+      <h2 class="section-title">Things I <em>Love</em></h2>
+    </div>
+
+    <div class="interests-grid">
+      {% for interest in interests %}
+      <div class="interest-card reveal stagger-child">
+        <span class="interest-emoji">{{ interest.emoji }}</span>
+        <div class="interest-name">{{ interest.name }}</div>
+        <div class="interest-sub">{{ interest.description }}</div>
+      </div>
+      {% empty %}
+       <p> no interest found</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- ─────────────────────────────────────────────────────────
+     CURRENTLY SECTION
+───────────────────────────────────────────────────────── -->
+<section class="currently-section">
+  <div class="container">
+    <div class="reveal" style="margin-bottom:1rem;">
+      <div class="section-label">Right Now</div>
+      <h2 class="section-title">What I'm <em>Up To</em></h2>
+    </div>
+    <div class="currently-grid">
+      {% for cur in current %}
+      <div class="glass-card currently-card reveal delay-{{ forloop.counter0 }}">
+        <div class="currently-label">{{cur.label}}</div>
+        <div class="currently-title">{{ cur.reading }}</div>
+        <div class="currently-sub">{{ cur.reading_sub }}</div>
+      </div>
+      {% empty %}
+       <p> no progress found</p>
+    {% endfor %}
+  </div>
+</section>
+
+
+<!-- ─────────────────────────────────────────────────────────
+     CTA
+───────────────────────────────────────────────────────── -->
+<section class="cta-band">
+  <div class="container">
+    <h2 class="reveal">
+      Like what you see?<br>
+      <span style="color:var(--accent)">Let's work together.</span>
+    </h2>
+    <p class="reveal delay-1">I'm open to full-time roles, freelance projects, and interesting collaborations.</p>
+    <div class="cta-band-actions reveal delay-2">
+      <a href="{% url 'index' %}#contact" class="btn btn-primary">
+        <i class="fas fa-paper-plane"></i> Send a Message
+      </a>
+      <a href="{{ profile.resume_url|default:'#' }}" class="btn btn-outline" target="_blank">
+        <i class="fas fa-file-alt"></i> View Resume
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  // ================ Generate particles =====================
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.cssText = `
+      left: ${Math.random() * 100}%;
+      --dur:   ${6 + Math.random() * 10}s;
+      --delay: ${Math.random() * 8}s;
+      --dx:    ${(Math.random() - 0.5) * 120}px;
+      opacity: ${0.3 + Math.random() * 0.4};
+    `;
+    if (Math.random() > 0.6) {
+      p.style.background = '#7b5ea7';
+      p.style.width = '3px';
+      p.style.height = '3px';
+    }
+    container.appendChild(p);
+  }
+
+  // =============== Age Calculator ===============
+  function age(birth) {
+      const b = new Date(birth);
+      const t = new Date();
+      let a = t.getFullYear() - b.getFullYear();
+      const m = t.getMonth() - b.getMonth();
+
+      if (m < 0 || (m === 0 && t.getDate() < b.getDate())) a--;
+
+      return a;
+  }
+
+  document.getElementById("age").innerText = age("{{ profile.birthday }}");
+
+  // ===========  Modal + Zoom ============
+  let scale = 1;
+
+  function openModal(src) {
+    const modal = document.getElementById("certModal");
+    const img = document.getElementById("modalImg");
+
+    modal.style.display = "flex";
+    img.src = src;
+
+    scale = 1;
+    img.style.transform = "scale(1)";
+  }
+
+  // Outside click
+  function outsideClick(event) {
+    const modal = document.getElementById("certModal");
+
+    if (event.target === modal) {
+      document.getElementById("certModal").style.display = "none";
+    }
+  }
+
+
+</script>
+{% endblock %}

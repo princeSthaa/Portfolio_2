@@ -1,0 +1,644 @@
+{% extends "portfolio/base.html" %}
+{% load static %}
+
+{% block title %}Prince Raj Shrestha — A Developer{% endblock %}
+{% block meta_description %}Prince Raj Shrestha — A Developer from Nepal. Building beautiful web applications with Python, Django or Java and Spring as Secondary.{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ────────────────────────────────────────────────────────────
+     HERO
+──────────────────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-orb hero-orb-3"></div>
+
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-badge">
+        Available for opportunities
+      </div>
+
+      <h1 class="hero-title">
+        <span class="line">Hi, I'm</span>
+        <span class="line highlight">{{ profile.name|default:'Prince Shrestha' }}</span>
+        <span class="line outline-text">Full-Stack Dev</span>
+      </h1>
+
+      <p class="hero-desc">
+        {{ profile.tagline|default:"Full-Stack Dev" }}
+      </p>
+
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">
+          <i class="fas fa-rocket"></i> View My Work
+        </a>
+        <a href="{% url 'about' %}" class="btn btn-outline">
+          About Me <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-number">{{ stats.projects|default:"4" }}<span>+</span></div>
+          <div class="stat-label">Projects Built</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">{{ stats.experience|default:"0" }}<span>yr</span></div>
+          <div class="stat-label">Experience</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-avatar-wrap">
+        <div class="avatar-ring"></div>
+        <div class="avatar-img">
+          {% if profile.avatar %}
+            <img src="{{ profile.avatar.url }}" alt="{{ profile.name }}" />
+          {% else %}
+            <i class="fas fa-user"></i>
+          {% endif %}
+        </div>
+
+        <div class="float-badge float-badge-1">
+          <i class="fab fa-python" style="color:#3776ab"></i> Python
+        </div>
+        <div class="float-badge float-badge-2">
+          <i class="fab fa-js-square" style="color:#f7df1e"></i> JavaScript
+        </div>
+        <div class="float-badge float-badge-3">
+          <i class="fas fa-database" style="color:#336791"></i> PostgreSQL
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+
+<!-- ────────────────────────────────────────────────────────────
+     ABOUT (brief)
+──────────────────────────────────────────────────────────── -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+
+      <div class="about-image-wrap reveal-left">
+        <div class="about-image-frame">
+          {% if profile.avatar %}
+            <img src="{{ profile.avatar.url }}" alt="{{ profile.name }}" />
+          {% else %}
+            <i class="fas fa-user-circle"></i>
+          {% endif %}
+        </div>
+        <div class="about-accent-box">
+          <span class="num">{{ stats.experience|default:"1" }}+</span>
+          <span class="lbl">Years of<br>Experience</span>
+        </div>
+      </div>
+
+      <div class="about-text">
+        <div class="reveal">
+          <div class="section-label">Who I Am</div>
+          <h2 class="section-title">
+            Crafting code that<br>
+            <em>matters</em>
+          </h2>
+        </div>
+
+        <div class="reveal delay-1">
+          <p>{{ profile.about_short|default:"Loading...." }}</p>
+          <p>When I'm not coding, you'll find me exploring the mountains of Nepal, reading about system design, or exploring new projects and machine learning models</p>
+        </div>
+
+        <div class="about-traits reveal delay-2">
+          {% for trait in profile.traits.all %}
+            <span class="trait-tag">{{ trait.name }}</span>
+          {% endfor %}
+        </div>
+
+        <div class="about-cta reveal delay-3">
+          <a href="{% url 'about' %}" class="btn btn-primary">
+            More About Me <i class="fas fa-arrow-right"></i>
+          </a>
+          <a href="{{ profile.resume_pdf.url|default:'#' }}"  
+            class="btn btn-outline" 
+            target="_blank">
+            <i class="fas fa-file-alt"></i> Resume
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ────────────────────────────────────────────────────────────
+     SKILLS
+──────────────────────────────────────────────────────────── -->
+<section id="skills">
+  <div class="container">
+    <div class="reveal" style="text-align:center; max-width:540px; margin:0 auto 1rem;">
+      <div class="section-label" style="justify-content:center; gap:0.5rem;">
+        <i class="fas fa-code"></i> Technical Skills
+      </div>
+      <h2 class="section-title">My <em>Toolkit</em></h2>
+    </div>
+    <div class="skills-grid">
+      {% for category in skill_categories %}
+      <div class="glass-card skill-category reveal stagger-child" style="transition-delay: {{ forloop.counter0 }}00ms">
+        <div class="skill-cat-header">
+          <div class="skill-cat-icon {% if forloop.counter == 2 %}purple{% elif forloop.counter == 3 %}coral{% endif %}">
+            <i class="{{ category.icon|default:'fas fa-layer-group' }}"></i>
+          </div>
+          <span class="skill-cat-name">{{ category.name }}</span>
+        </div>
+        <div class="skill-list">
+          {% for skill in category.skills.all %}
+          <div class="skill-item">
+            <div class="skill-item-header">
+              <span class="skill-name">{{ skill.name }}</span>
+              <span class="skill-pct">{{ skill.proficiency }}%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill {% if forloop.parentloop.counter == 2 %}purple{% elif forloop.parentloop.counter == 3 %}coral{% endif %}"
+                   data-width="{{ skill.proficiency }}"></div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Technology cloud -->
+    
+  <div class="tech-cloud reveal" style="margin-top:3rem; justify-content:center;">
+    {% for tech in tech_stack %}
+      <span class="tech-tag">
+        <i class="{{ tech.icon }}"></i>
+        {{ tech.name }}
+      </span>
+    {% empty %}
+      <p>Loading tech stack</p>
+    {% endfor %}
+  </div>
+  </div>
+</section>
+
+<!-- ────────────────────────────────────────────────────────────
+     PROJECTS
+──────────────────────────────────────────────────────────── -->
+<section id="projects">
+  <div class="container">
+    <div class="projects-header">
+      <div class="reveal">
+        <div class="section-label">What I've Built</div>
+        <h2 class="section-title">Selected <em>Projects</em></h2>
+      </div>
+
+      <div class="project-filters reveal delay-1">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="web">Web</button>
+        <button class="filter-btn" data-filter="api">API</button>
+        <button class="filter-btn" data-filter="tool">Tools</button>
+      </div>
+    </div>
+
+    <div class="projects-grid" id="projectsGrid">
+      {% for project in projects %}
+      {# Django dynamically renders each card — no duplicated HTML #}
+      <article class="project-card {% if project.is_featured and forloop.first %}featured{% endif %} reveal"
+               data-category="{% if project.category.all %}{{ project.category.all.0.name|lower }}{% endif %}"
+               style="transition-delay: {{ forloop.counter0 }}00ms">
+
+        <div class="project-thumb">
+          {% if project.thumbnail %}
+            <img src="{{ project.thumbnail.url }}" alt="{{ project.title }}" loading="lazy" />
+          {% else %}
+            <div class="project-thumb-placeholder">
+              <i class="fas fa-code"></i>
+            </div>
+          {% endif %}
+          <div class="project-overlay">
+            {% if project.live_url %}
+            <a href="{{ project.live_url }}" target="_blank" title="Live Demo">
+              <i class="fas fa-external-link-alt"></i>
+            </a>
+            {% endif %}
+            {% if project.github_url %}
+            <a href="{{ project.github_url }}" target="_blank" title="GitHub">
+              <i class="fab fa-github"></i>
+            </a>
+            {% endif %}
+          </div>
+          {% if project.is_featured %}
+          <span class="project-featured-badge">★ Featured</span>
+          {% endif %}
+        </div>
+
+        <div class="project-body">
+          <div class="project-tags">
+            {% for tag in project.tag.all %}
+              <span class="project-tag">{{ tag.name }}</span>
+            {% endfor %}
+          </div>
+          <h3 class="project-title">{{ project.title }}</h3>
+          <p class="project-desc">{{ project.description }}</p>
+
+          <div class="project-footer">
+            <div class="project-tech-stack">
+              {% for tech in project.tech_stack.all %}
+                <span>{{ tech.name }}</span>
+              {% endfor %}
+            </div>
+            <div class="project-links">
+              {% if project.github_url %}
+              <a href="{{ project.github_url }}" target="_blank" title="GitHub">
+                <i class="fab fa-github"></i>
+              </a>
+              {% endif %}
+              {% if project.live_url %}
+              <a href="{{ project.live_url }}" target="_blank" title="Live Demo">
+                <i class="fas fa-external-link-alt"></i>
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </article>
+      {% empty %}
+        <div class="empty-state" style="text-align:center; padding:2rem;">
+          <img src="https://media.giphy.com/media/14uQ3cOFteDaU/giphy.gif" 
+              alt="No Project Data Loaded"
+              style="max-width:200px; opacity:0.8;">
+          <h3 style="margin-top:1rem;">Project Data Not Found</h3>
+          <p style="opacity:0.7;">Projects are loading....</p>
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ────────────────────────────────────────────────────────────
+     EXPERIENCE & EDUCATION
+──────────────────────────────────────────────────────────── -->
+<section id="experience">
+  <div class="container">
+    <div class="reveal" style="margin-bottom:3rem;">
+      <div class="section-label">Background</div>
+      <h2 class="section-title">Experience &amp; <em>Education</em></h2>
+    </div>
+
+    <div class="exp-tabs reveal visible">
+      <button class="exp-tab" data-panel="work">Work Experience</button>
+      <button class="exp-tab active" data-panel="education">Education</button>
+      <button class="exp-tab" data-panel="certifications">Certifications</button>
+    </div>
+
+    <!-- Work Experience Panel -->
+    <div class="exp-panel" id="panel-work">
+      <div class="timeline">
+        {% for exp in work_experiences %}
+            {# One template, many items — backend provides data #}
+            <div class="timeline-item reveal" style="transition-delay: {{ forloop.counter0 }}50ms">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+                <div class="timeline-meta">
+                <span class="timeline-period">{{ exp.start_date }} — {{ exp.end_date|default:"Present" }}</span>
+                <span class="timeline-company">
+                    <i class="fas fa-building"></i> {{ exp.company }}
+                </span>
+                </div>
+                <div class="timeline-role">{{ exp.role }}</div>
+                <p class="timeline-desc">{{ exp.description }}</p>
+                <div class="timeline-skills">
+                {% for skill in exp.skills.all %}
+                    <span class="timeline-skill-tag">{{ skill.name }}</span>
+                {% endfor %}
+                </div>
+            </div>
+          </div>
+          {% empty %}
+          <div class="empty-state" style="text-align:center; padding:2rem;">
+            <img src="https://media.giphy.com/media/14uQ3cOFteDaU/giphy.gif" 
+                alt="No data"
+                style="max-width:200px; opacity:0.8;">
+            <h3 style="margin-top:1rem;">Work Data Not Found</h3>
+            <p style="opacity:0.7;">Coming soon 🚀</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Education Panel -->
+    <div class="exp-panel active" id="panel-education">
+      <div class="timeline">
+        {% for edu in education_list %}
+        <div class="timeline-item reveal" style="transition-delay: {{ forloop.counter0 }}50ms">
+          
+          <div class="timeline-dot education"></div>
+
+          <div class="timeline-card">
+            <div class="timeline-meta">
+              
+              <span class="timeline-period education">
+                {{ edu.start_date|date:"Y" }} — 
+                {{ edu.end_date|date:"Y"|default:"Present" }}
+              </span>
+
+              <span class="timeline-company">
+                <i class="fas fa-university"></i> {{ edu.institution }}
+              </span>
+
+            </div>
+
+            <div class="timeline-role">{{ edu.degree }}</div>
+            <p class="timeline-desc">{{ edu.description }}</p>
+
+          </div>
+        </div>
+        {% empty %}
+          <p>No education data found</p>
+        {% endfor %}
+
+      </div>
+    </div>
+
+    <!-- Certifications Panel -->
+    <div class="exp-panel" id="panel-certifications">
+      <div class="timeline">
+        <div class="timeline-item reveal">
+          <div class="timeline-dot education"></div>
+          <div class="timeline-card cert-card" 
+              onclick="openModal([
+                        '{% static 'images/py_cert_python.png' %}',
+                        '{% static 'images/py_cert_pandas.png' %}'
+                      ])">
+            <div class="timeline-meta">
+              <span class="timeline-period education">2026</span>
+              <span class="timeline-company">
+                <i class="fas fa-certificate"></i> Kaggle
+              </span>
+            </div>
+            <div class="timeline-role">Python Certification</div>
+            <p class="timeline-desc">Covered All the Python Basic-Intermediate lessons</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ────────────────────────────────────────────────────────────
+     CONTACT
+──────────────────────────────────────────────────────────── -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="reveal">
+          <div class="section-label">Get In Touch</div>
+          <h2>Let's build something <em>great</em> together.</h2>
+          <p>I'm currently open to new opportunities and collaborations. Whether you have a project in mind, a question, or just want to say hi — my inbox is always open.</p>
+        </div>
+
+        <div class="contact-links reveal delay-1">
+          <a href="mailto:{{ profile.gmail|default:'shresthaprince222@gmail.com' }}" class="contact-link-item">
+            <div class="contact-link-icon"><i class="fas fa-envelope"></i></div>
+            <div class="contact-link-text">
+              <div class="contact-link-label">Email</div>
+              {{ profile.gmail|default:"shresthaprince222@gmail.com" }}
+            </div>
+          </a>
+          <a href="{{ profile.github|default:'princeSthaa' }}" target="_blank" class="contact-link-item">
+            <div class="contact-link-icon"><i class="fab fa-github"></i></div>
+            <div class="contact-link-text">
+              <div class="contact-link-label">GitHub</div>
+              {{ profile.github|default:"princeSthaa" }}
+            </div>
+          </a>
+          <a href="{{ profile.linked_in|default:'  ' }}" target="_blank" class="contact-link-item">
+            <div class="contact-link-icon"><i class="fab fa-linkedin-in"></i></div>
+            <div class="contact-link-text">
+              <div class="contact-link-label">LinkedIn</div>
+              {{ profile.linked_in|default:"princeSthaa" }}
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="reveal delay-2">
+        <form class="contact-form" method="post" action="{% url 'about' %}">    
+          {% csrf_token %}
+          <div class="form-row">
+            <div class="form-group">
+              <label for="contact-name">Your Name</label>
+              <input type="text" id="contact-name" name="name" placeholder="Prince" required />
+            </div>
+            <div class="form-group">
+              <label for="contact-email">Email Address</label>
+              <input type="email" id="contact-email" name="email" placeholder="shresthaprince222@gmail.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="contact-subject">Subject</label>
+            <input type="text" id="contact-subject" name="subject" placeholder="Project Inquiry" />
+          </div>
+          <div class="form-group">
+            <label for="contact-message">Message</label>
+            <textarea id="contact-message" name="message" placeholder="Tell me about your project…" required></textarea>
+          </div>
+          <div class="form-submit">
+            <button type="submit" class="btn btn-primary">
+              Send Message <i class="fas fa-paper-plane"></i>
+            </button>
+            <span style="font-size:0.82rem; color:var(--muted);">
+              <i class="fas fa-shield-alt" style="color:var(--accent)"></i> I'll reply within 24 hrs
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="certModal" class="modal" onclick="outsideClick(event)">
+
+  <button class="nav-btn prev" onclick="prevImage(event)">‹</button>
+
+  <img class="modal-content" id="modalImg">
+
+  <button class="nav-btn next" onclick="nextImage(event)">›</button>
+</div>
+
+{% endblock %}
+
+
+{% block extra_scripts %}
+<script>
+  // ── Skill bar animation (triggered on scroll) ──────────────
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+          const w = bar.getAttribute('data-width') || 75;
+          bar.style.width = w + '%';
+        });
+        barObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.skill-category').forEach(el => barObserver.observe(el));
+
+  // ── Experience tab switching ───────────────────────────────
+  document.querySelectorAll('.exp-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const panel = tab.dataset.panel;
+
+      document.querySelectorAll('.exp-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.exp-panel').forEach(p => p.classList.remove('active'));
+
+      tab.classList.add('active');
+      document.getElementById('panel-' + panel).classList.add('active');
+
+      // Re-trigger reveal animations in newly shown panel
+      document.querySelectorAll('#panel-' + panel + ' .reveal').forEach(el => {
+        el.classList.remove('visible');
+        setTimeout(() => el.classList.add('visible'), 50);
+      });
+    });
+  });
+
+  // ── Project filter ────────────────────────────────────────
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+
+      document.querySelectorAll('.project-card').forEach(card => {
+        const cat = card.dataset.category || 'web';
+        if (filter === 'all' || cat === filter) {
+          card.style.display = '';
+          setTimeout(() => card.style.opacity = '1', 10);
+        } else {
+          card.style.opacity = '0';
+          setTimeout(() => card.style.display = 'none', 300);
+        }
+      });
+    });
+  });
+
+  // ── Typed text effect in hero ─────────────────────────────
+  const roles = ['AI/ML Engineer', 'Python Engineer', 'Django Developer', 'Java/Spring Developer'];
+  let roleIdx = 0, charIdx = 0, isDeleting = false;
+  const outlineEl = document.querySelector('.hero-title .outline-text');
+
+  function typeRole() {
+    if (!outlineEl) return;
+    const current = roles[roleIdx];
+    if (isDeleting) {
+      outlineEl.textContent = current.substring(0, charIdx - 1);
+      charIdx--;
+    } else {
+      outlineEl.textContent = current.substring(0, charIdx + 1);
+      charIdx++;
+    }
+    if (!isDeleting && charIdx === current.length) {
+      setTimeout(() => { isDeleting = true; }, 1600);
+    } else if (isDeleting && charIdx === 0) {
+      isDeleting = false;
+      roleIdx = (roleIdx + 1) % roles.length;
+    }
+    const speed = isDeleting ? 60 : 110;
+    setTimeout(typeRole, speed);
+  }
+  setTimeout(typeRole, 1800);
+
+
+  // ────────  Modal + Zoom ──────────
+  let image = [];
+  let currentIndex = 0;
+  let scale = 1;
+
+  function openModal(srcArray) {
+    image = srcArray;
+    currentIndex = 0;
+
+    const modal = document.getElementById("certModal");
+    modal.style.display = "flex";
+
+    showImg();
+    updateNavButtons();
+  }
+
+  function showImg() {
+    const img = document.getElementById("modalImg");
+
+    img.src = image[currentIndex];
+    scale = 1;
+    img.style.transform = "scale(1)";
+
+    updateNavButtons();
+  }
+
+  function closeModal() {
+    document.getElementById("certModal").style.display = "none";
+  }
+
+  // Outside click
+  function outsideClick(event) {
+    const modal = document.getElementById("certModal");
+
+    if (event.target === modal) {
+      closeModal();
+    }
+  }
+
+  function nextImage(event) {
+    if (event) event.stopPropagation();
+
+    if (currentIndex < image.length - 1) {
+      currentIndex++;
+      showImg();
+    }
+  }
+
+  function prevImage(event) {
+    if (event) event.stopPropagation();
+
+    if (currentIndex > 0) {
+      currentIndex--;
+      showImg();
+    }
+  }
+
+  function updateNavButtons() {
+    const prevBtn = document.querySelector(".prev");
+    const nextBtn = document.querySelector(".next");
+
+    if (!prevBtn || !nextBtn) return;
+
+    prevBtn.style.display = currentIndex === 0 ? "none" : "block";
+    nextBtn.style.display = currentIndex === image.length - 1 ? "none" : "block";
+  }
+  
+
+</script>
+{% endblock %}
