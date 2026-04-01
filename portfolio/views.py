@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Profile   # ✅ add this
-from .models import SkillCategory, WorkExperience, Education, Project, ProjectTechStack, Certification, Journey_Milestone, Interest,Current
+from .models import SkillCategory, WorkExperience, Education, Project, ProjectTechStack, Certification, Journey_Milestone, Interest, Current, Stats
 
 def about(request):
     profile = Profile.objects.first()
@@ -30,7 +30,8 @@ def index(request):
         "work_experiences": work_experiences,
         "education_list": education,
         "projects" : projects,
-        "tech_stack" : tech_stack
+        "tech_stack" : tech_stack,
+        "stats":Stats.objects.first()
     })
 
 def base(request):

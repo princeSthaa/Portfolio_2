@@ -19,7 +19,7 @@ class Profile(models.Model):
     job_title = models.CharField(max_length=100)
     github = models.CharField(max_length=100)
     linked_in = models.CharField(max_length=100)
-
+    
     resume_pdf = models.FileField(upload_to='documents/', default='documents/default.pdf')
 
     about_short = models.TextField(blank=True, default=' ')
@@ -33,7 +33,7 @@ class Profile(models.Model):
     values = models.ManyToManyField(Value, related_name='profiles')
 
 
-class Stats(models.Model):  # also fix naming (capital S)
+class Stats(models.Model):  
     projects = models.IntegerField(default=0)
     experience = models.IntegerField(default=0)
     
