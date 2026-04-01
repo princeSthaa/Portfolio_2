@@ -304,7 +304,6 @@
     <div class="exp-tabs reveal visible">
       <button class="exp-tab" data-panel="work">Work Experience</button>
       <button class="exp-tab active" data-panel="education">Education</button>
-      <button class="exp-tab" data-panel="certifications">Certifications</button>
     </div>
 
     <!-- Work Experience Panel -->
@@ -537,75 +536,6 @@
     setTimeout(typeRole, speed);
   }
   setTimeout(typeRole, 1800);
-
-
-  // ────────  Modal + Zoom ──────────
-  let image = [];
-  let currentIndex = 0;
-  let scale = 1;
-
-  function openModal(srcArray) {
-    image = srcArray;
-    currentIndex = 0;
-
-    const modal = document.getElementById("certModal");
-    modal.style.display = "flex";
-
-    showImg();
-    updateNavButtons();
-  }
-
-  function showImg() {
-    const img = document.getElementById("modalImg");
-
-    img.src = image[currentIndex];
-    scale = 1;
-    img.style.transform = "scale(1)";
-
-    updateNavButtons();
-  }
-
-  function closeModal() {
-    document.getElementById("certModal").style.display = "none";
-  }
-
-  // Outside click
-  function outsideClick(event) {
-    const modal = document.getElementById("certModal");
-
-    if (event.target === modal) {
-      closeModal();
-    }
-  }
-
-  function nextImage(event) {
-    if (event) event.stopPropagation();
-
-    if (currentIndex < image.length - 1) {
-      currentIndex++;
-      showImg();
-    }
-  }
-
-  function prevImage(event) {
-    if (event) event.stopPropagation();
-
-    if (currentIndex > 0) {
-      currentIndex--;
-      showImg();
-    }
-  }
-
-  function updateNavButtons() {
-    const prevBtn = document.querySelector(".prev");
-    const nextBtn = document.querySelector(".next");
-
-    if (!prevBtn || !nextBtn) return;
-
-    prevBtn.style.display = currentIndex === 0 ? "none" : "block";
-    nextBtn.style.display = currentIndex === image.length - 1 ? "none" : "block";
-  }
-  
 
 </script>
 {% endblock %}
