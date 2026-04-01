@@ -376,29 +376,6 @@
       </div>
     </div>
 
-    <!-- Certifications Panel -->
-    <div class="exp-panel" id="panel-certifications">
-      <div class="timeline">
-        <div class="timeline-item reveal">
-          <div class="timeline-dot education"></div>
-          <div class="timeline-card cert-card" 
-              onclick="openModal([
-                        '{% static 'images/py_cert_python.png' %}',
-                        '{% static 'images/py_cert_pandas.png' %}'
-                      ])">
-            <div class="timeline-meta">
-              <span class="timeline-period education">2026</span>
-              <span class="timeline-company">
-                <i class="fas fa-certificate"></i> Kaggle
-              </span>
-            </div>
-            <div class="timeline-role">Python Certification</div>
-            <p class="timeline-desc">Covered All the Python Basic-Intermediate lessons</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
 </section>
 
@@ -475,15 +452,6 @@
     </div>
   </div>
 </section>
-
-<div id="certModal" class="modal" onclick="outsideClick(event)">
-
-  <button class="nav-btn prev" onclick="prevImage(event)">‹</button>
-
-  <img class="modal-content" id="modalImg">
-
-  <button class="nav-btn next" onclick="nextImage(event)">›</button>
-</div>
 
 {% endblock %}
 
