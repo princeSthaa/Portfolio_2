@@ -25,7 +25,7 @@ SECRET_KEY = 'qniux*i4xmy!^9^j8r3i'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1','.vercel.app']
+ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1','.vercel.app','portfolio-2-pnzp81uhb-shresthaprince222-6364s-projects.vercel.app']
 
 # Application definition
 
