@@ -28,7 +28,7 @@ def about(request):
             fail_silently=False,
         )
     
-    return render(request, 'portfolio/about.html',
+    return render(request, 'portfolio/',
                   {
                       'profile' : profile,
                       'certifications': Certification.objects.all(),
